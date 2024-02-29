@@ -1,5 +1,7 @@
+#####################################################################################
 #!/bin/bash
-###############################################
+##
+#####################################################################################
 ##
 ## Hard disk activity monitor in console
 ##
@@ -16,18 +18,18 @@
 ## OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ##
-##############################################
+#####################################################################################
 ##
 ##
 ### version
 ver_name="Hard Disk LED v0.1 / by xiangbo"
 ver_line="-------------------------------"
 
-## READ color
+## READ color / green
 r_color='\033[0;32m'
-## WRITE color
+## WRITE color / red
 w_color='\033[0;31m'
-## clear color
+## clear colors
 no_color='\033[0m'
 
 ## set variables
