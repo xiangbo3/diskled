@@ -1,7 +1,7 @@
 ![image](console.png)
 
 # 控制台硬盘读写状态监视
-这是一个用于在Linux控制台中监视硬盘读写状态的程序。
+用于在Linux控制中实时监视所有硬盘的读写状态。
 
 ## 使用方法 
 这是个Bash脚本，在Linux中可直接运行。
@@ -11,7 +11,7 @@
 ```
 
 # Disk LED status in Console
-This is used to monitor the read/write status of the hard disks in Linux console.
+This is used to monitor the real-time read/write status of all hard disks in Linux console.
 
 ## Usage
 It's a bash script, just run it.
