@@ -1,10 +1,18 @@
+![image](console.png)
+
 # Disk LED status in Console
-一个用于在控制台中显示硬盘读写灯状态的程序.
+This is used to monitor hard disk Read/Write status in linux console
 
-![image](https://raw.githubusercontent.com/xiangbo3/diskled/1ad4b3ed8a9d1cddccfc8968d1d132796e108235/console.png)
+## Usage
+It's a bash script, just run it
 
-# 使用方法 
+> ./diskled.sh
+
+# 控制台硬盘读写状态监视
+这是一个用于在Linux控制台中监视硬盘读写状态的程序.
+
+## 使用方法 
 这是个Bash脚本,在Linux中可直接运行
 
-./diskled.sh
+> ./diskled.sh
 
