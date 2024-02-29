@@ -1,6 +1,6 @@
 #!/bin/bash
 ###############################################
-## Hard Disk Activity Monitor in Terminal
+## Hard disk activity monitor in console
 ##
 ##                      by xiangbo@foxmail.com
 ##
@@ -16,8 +16,7 @@ ver_line="-------------------------------"
 r_color='\033[0;32m'
 ## WRITE color
 w_color='\033[0;31m'
-
-######################################
+## clear color
 no_color='\033[0m'
 
 ## set variables
@@ -64,7 +63,7 @@ while [ 1 = 1 ]; do
 	eval "${d}_r0=${r1}"
 	eval "${d}_w0=${w1}"
 
-	### OUTPUT
+	### output led status
 	echo -ne "\t $d | $r_color $rout \t $w_color $wout $no_color \n"
 
     done
