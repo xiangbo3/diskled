@@ -7,7 +7,7 @@
 这是个Bash脚本，在Linux中可直接运行。
 
 ```
-> ./diskled.sh
+./diskled.sh
 ```
 
 # Disk LED status in Console
@@ -17,6 +17,8 @@ This is used to monitor hard disk Read/Write status in linux console
 It's a bash script, just run it.
 
 ```
-> ./diskled.sh
+./diskled.sh
 ```
+
+*by xiangbo / 2024-03-01*
 
