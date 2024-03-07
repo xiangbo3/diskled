@@ -22,7 +22,7 @@
 ##
 ##
 ### version
-ver_name="Hard Disk LED v0.1 / by xiangbo"
+ver_name="Hard Disk LED v0.2 / by xiangbo"
 ver_line="-------------------------------"
 
 ## READ color / green
@@ -33,7 +33,7 @@ w_color='\033[0;31m'
 no_color='\033[0m'
 
 ## set variables
-disks=$(lsblk -d | tail -n+2 | awk '{print $1}')
+disks=$(lsblk -d | tail -n+2 | grep -v '^ ' | awk '{print $1}')
 for d in $disks; do
 	eval "${d}_r0=0"
 	eval "${d}_w0=0"
