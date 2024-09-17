@@ -1,6 +1,4 @@
-#####################################################################################
-#!/bin/bash
-##
+#!/usr/bin/env bash
 #####################################################################################
 ##
 ## Hard disk activity monitor in console
@@ -19,10 +17,14 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ##
 #####################################################################################
+## Update log:
+## - v0.3
+##    FreeBSD support added
 ##
-##
+
 ### version
-ver_name="Hard Disk LED v0.2 / by xiangbo"
+ver="v0.3"
+ver_name="Hard Disk LED ${ver} / by xiangbo"
 ver_line="-------------------------------"
 
 ## READ color / green
@@ -32,33 +34,63 @@ w_color='\033[0;31m'
 ## clear colors
 no_color='\033[0m'
 
+### OS Version
+OS="Linux"
+uname -a|grep ^FreeBSD > /dev/null
+ret=$?
+if [ "$ret" -eq 0 ]; then
+	OS="FreeBSD"
+fi
+
 ## set variables
-disks=$(lsblk -d | tail -n+2 | grep -v '^ ' | awk '{print $1}')
+if [ "$OS" = "FreeBSD" ]; then
+	disks=$(sysctl kern.disks|awk -F ': ' '{print $2}')
+else 
+	disks=$(lsblk -d | tail -n+2 | grep -v '^ ' | awk '{print $1}')
+fi
+
 for d in $disks; do
 	eval "${d}_r0=0"
 	eval "${d}_w0=0"
 done
 
 ### show title
-clear
-echo 
-echo -e "\t $ver_name"
-echo -e "\t $ver_line"
+show_title() {
+  clear
+  echo 
+  echo -e "\t $ver_name"
+  echo -e "\t $ver_line"
+}
+
+show_title
 
 ## loop
-while [ 1 = 1 ]; do
+while [ 1 ]; do
+
+    ## clear every 10 seconds
+    now=$(date "+%s")
+    if [ $(($now % 10)) -eq 0 ]; then
+	    show_title
+    fi
 
     ##move cursor
     echo -ne '\033[4;1H'
 
     for d in $disks; do
 
-	dsk="/sys/block/${d}/stat"
-
-	stats=$(cat $dsk) stat=($stats)
-
-	r1="${stat[0]}"
-	w1="${stat[4]}"
+	if [ "$OS" = "FreeBSD" ]; then
+		dsk="${d}"
+		stats=$(iostat -dxI $dsk|grep $d)
+		r1=$(echo $stats | awk '{print $2}')
+		w1=$(echo $stats | awk '{print $3}')
+		r1=${r1%.*}
+		w1=${w1%.*}
+	else
+		dsk="/sys/block/${d}/stat"
+		stats=$(cat $dsk) stat=($stats)
+		r1="${stat[0]}"
+		w1="${stat[4]}"
+	fi
 
 	eval 'r0=$'${d}_r0
 	eval 'w0=$'${d}_w0
@@ -86,6 +118,6 @@ while [ 1 = 1 ]; do
     now=$(date "+%Y-%m-%d %H:%M:%S")
     echo -ne "\t $now \n\n"
 
-    sleep 0.5
+    sleep 1
 
 done
