@@ -18,12 +18,14 @@
 ##
 #####################################################################################
 ## Update log:
+## - v0.4
+##   Add OpenBSD support
 ## - v0.3
-##    FreeBSD support added
+##   Add FreeBSD support 
 ##
 
 ### version
-ver="v0.3"
+ver="v0.4"
 ver_name="Hard Disk LED ${ver} / by xiangbo"
 ver_line="-------------------------------"
 
@@ -35,18 +37,29 @@ w_color='\033[0;31m'
 no_color='\033[0m'
 
 ### OS Version
-OS="Linux"
-uname -a|grep ^FreeBSD > /dev/null
-ret=$?
-if [ "$ret" -eq 0 ]; then
-	OS="FreeBSD"
-fi
+OS=$(uname)
 
 ## set variables
 if [ "$OS" = "FreeBSD" ]; then
-	disks=$(sysctl kern.disks|awk -F ': ' '{print $2}')
-else 
+	disks=$(sysctl -n kern.disks)
+elif [ "$OS" = "OpenBSD" ]; then
+	foo=$(sysctl -n hw.disknames)
+	old_ifs="${IFS}"
+	IFS=','
+	disks=""
+	for d in $foo; do
+		if [ -z $disks ]; then
+			disks="${d%:*}"
+		else
+			disks="$disks ${d%:*}"
+		fi
+	done
+	IFS="${old_ifs}"
+elif [ "$OS" = "Linux" ]; then
 	disks=$(lsblk -d | tail -n+2 | grep -v '^ ' | awk '{print $1}')
+else
+	echo "OS not supported"
+	exit
 fi
 
 for d in $disks; do
@@ -85,7 +98,12 @@ while [ 1 ]; do
 		w1=$(echo $stats | awk '{print $3}')
 		r1=${r1%.*}
 		w1=${w1%.*}
-	else
+	elif [ "$OS" = "OpenBSD" ]; then
+		stats=$(iostat -dI $d|tail -n1)
+		r1=$(echo $stats | awk '{print $2}')
+		w1=0
+		#w1=$(echo $stats | awk '{print $2}')
+	elif [ "$OS" = "Linux" ]; then
 		dsk="/sys/block/${d}/stat"
 		stats=$(cat $dsk) stat=($stats)
 		r1="${stat[0]}"
@@ -99,7 +117,11 @@ while [ 1 ]; do
 	wout="     "
 
 	if [ $r0 != $r1 ] && [ $r0 != 0 ]; then
+	    if [ "$OS" = "OpenBSD" ]; then
+		rout="[//]"
+	    else
 		rout="READ"
+	    fi
 	fi
 	if [ $w0 != $w1 ] && [ $w0 != 0 ]; then
 		wout="WRITE"
