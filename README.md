@@ -4,14 +4,14 @@
 用于在Linux/FreeBSD控制中实时监视所有硬盘的读写状态。
 
 ## 使用方法 
-这是个Bash脚本，在Linux/FreeBSD中可直接运行。
+这是个Bash脚本，在Linux/FreeBSD/OpenBSD/NetBSD/DragonflyBSD中可直接运行。
 
 ```
 ./diskled.sh
 ```
 
 # Disk LED status in Console
-This is used to monitor the real-time read/write status of all hard disks in Linux/FreeBSD/NetBSD/DragonflyBSD console.
+This is used to monitor the real-time read/write status of all hard disks in Linux/FreeBSD/OpenBSD/NetBSD/DragonflyBSD console.
 
 ## Usage
 It's a bash script, just run it.
