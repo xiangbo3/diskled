@@ -11,7 +11,7 @@
 ```
 
 # Disk LED status in Console
-This is used to monitor the real-time read/write status of all hard disks in Linux/FreeBSD console.
+This is used to monitor the real-time read/write status of all hard disks in Linux/FreeBSD/NetBSD/DragonflyBSD console.
 
 ## Usage
 It's a bash script, just run it.

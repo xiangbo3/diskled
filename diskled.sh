@@ -18,6 +18,8 @@
 ##
 #####################################################################################
 ## Update log:
+## - v0.6
+##   Add DragonflyBSD support.
 ## - v0.5
 ##   Add NetBSD support.
 ## - v0.4
@@ -27,14 +29,16 @@
 ##
 
 ### version
-ver="v0.5"
+ver="v0.6"
 ver_name="Disk LED ${ver} / by xiangbo"
 ver_line="--------------------------"
 
-## READ color / green
-r_color='\033[0;32m'
 ## WRITE color / red
 w_color='\033[0;31m'
+## READ color / green
+r_color='\033[0;32m'
+## READ & WRITE color / yellow
+rw_color='\033[0;33m'
 ## clear colors
 no_color='\033[0m'
 
@@ -59,6 +63,8 @@ elif [ "$OS" = "OpenBSD" ]; then
 	IFS="${old_ifs}"
 elif [ "$OS" = "NetBSD" ]; then
 	disks=$(sysctl -n hw.disknames) 
+elif [ "$OS" = "DragonFly" ]; then
+	disks=$(sysctl -n kern.disks)
 elif [ "$OS" = "Linux" ]; then
 	disks=$(lsblk -d | tail -n+2 | grep -v '^ ' | awk '{print $1}')
 else
@@ -111,6 +117,15 @@ while [ 1 ]; do
 		stats=$(iostat -dxI $dsk|grep $d)
 		r1=$(echo $stats | awk '{print $3}')
 		w1=$(echo $stats | awk '{print $7}')
+	elif [ "$OS" = "DragonFly" ]; then
+		## skip virtual disk
+		if [ "${d#vn*}" != "${d}" ]; then
+			continue
+		fi
+		stats=$(iostat -dI $d|tail -n1)
+		r1=$(echo $stats | awk '{print $2}')
+		w1=0
+		#w1=$(echo $stats | awk '{print $2}')
 	elif [ "$OS" = "Linux" ]; then
 		dsk="/sys/block/${d}/stat"
 		stats=$(cat $dsk) stat=($stats)
@@ -127,6 +142,10 @@ while [ 1 ]; do
 	if [ $r0 != $r1 ] && [ $r0 != 0 ]; then
 	    if [ "$OS" = "OpenBSD" ]; then
 		rout="[//]"
+		r_color=$rw_color
+	    elif [ "$OS" = "DragonFly" ]; then
+		rout="[//]"
+		r_color=$rw_color
 	    else
 		rout="READ"
 	    fi
