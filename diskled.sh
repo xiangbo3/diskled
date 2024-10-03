@@ -35,7 +35,7 @@
 ##
 
 ### version
-ver="v0.7"
+ver="v0.8"
 ver_name="Disk LED ${ver} / by xiangbo"
 ver_line="--------------------------"
 
@@ -58,21 +58,6 @@ show_title() {
 
 ### OS Version
 OS=$(uname)
-
-### Test if echo needs -e parameter
-ECHO_E="no"
-echo_test="Hello\nWorld"
-echo_test_out=$(echo $echo_test)
-if [ $echo_test = $echo_test_out ]; then
-  ECHO_E="yes"
-fi
-os_echo() {
-  if [ "$ECHO_E" = "yes" ]; then
-	echo -e "$@"
-  else
-	echo "$@"
-  fi
-}
 
 ## set variables
 if [ "$OS" = "FreeBSD" ]; then
@@ -118,7 +103,7 @@ while [ 1 ]; do
     fi
 
     ## move cursor
-    os_echo '\033[3;1H'
+    echo "\033[3;1H"
 
     for d in $disks; do
 
@@ -181,7 +166,7 @@ while [ 1 ]; do
 	eval "${d}_w0=${w1}"
 
 	### output led status
-	os_echo " $d | $r_color $rout \t $w_color $wout $no_color "
+	echo " $d | $r_color $rout \t $w_color $wout $no_color "
 
     done
     
