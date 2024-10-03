@@ -59,12 +59,18 @@ show_title() {
 ### OS Version
 OS=$(uname)
 
-### OS special echo function
+### Test if echo needs -e parameter
+ECHO_E="no"
+echo_test="Hello\nWorld"
+echo_test_out=$(echo $echo_test)
+if [ $echo_test = $echo_test_out ]; then
+  ECHO_E="yes"
+fi
 os_echo() {
-  if [ "$OS" = "Linux" ]; then
-	echo "$@"
-  else
+  if [ "$ECHO_E" = "yes" ]; then
 	echo -e "$@"
+  else
+	echo "$@"
   fi
 }
 
@@ -183,7 +189,6 @@ while [ 1 ]; do
     echo " $ver_line"
     now=$(date "+%Y-%m-%d %H:%M:%S")
     echo " $now "
-    echo
 
     sleep 0.5
 
