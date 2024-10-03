@@ -48,8 +48,25 @@ rw_color='\033[0;33m'
 ## clear colors
 no_color='\033[0m'
 
+### Show title
+show_title() {
+  clear
+  echo 
+  echo " $ver_name"
+  echo " $ver_line"
+}
+
 ### OS Version
 OS=$(uname)
+
+### OS special echo function
+os_echo() {
+  if [ "$OS" = "Linux" ]; then
+	echo "$@"
+  else
+	echo -e "$@"
+  fi
+}
 
 ## set variables
 if [ "$OS" = "FreeBSD" ]; then
@@ -83,14 +100,6 @@ for d in $disks; do
 	eval "${d}_w0=0"
 done
 
-### show title
-show_title() {
-  clear
-  echo 
-  echo " $ver_name"
-  echo " $ver_line"
-}
-
 show_title
 
 ## loop
@@ -102,8 +111,8 @@ while [ 1 ]; do
 	    show_title
     fi
 
-    ##move cursor
-    echo -n '\033[4;1H'
+    ## move cursor
+    os_echo '\033[3;1H'
 
     for d in $disks; do
 
@@ -166,14 +175,15 @@ while [ 1 ]; do
 	eval "${d}_w0=${w1}"
 
 	### output led status
-	echo " $d | $r_color $rout \t $w_color $wout $no_color "
+	os_echo " $d | $r_color $rout \t $w_color $wout $no_color "
 
     done
     
     ## show time
     echo " $ver_line"
     now=$(date "+%Y-%m-%d %H:%M:%S")
-    echo " $now \n\n"
+    echo " $now "
+    echo
 
     sleep 0.5
 
