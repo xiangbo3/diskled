@@ -19,15 +19,19 @@
 #####################################################################################
 ## Update log:
 ## - v0.7
-##   Remove bash dependencies, now script is run by sh.
+#    Remove bash dependencies, now script is run by sh.
 ## - v0.6
-##   Add DragonFlyBSD support.
+#    Add DragonFlyBSD support.
 ## - v0.5
-##   Add NetBSD support.
+#    Add NetBSD support.
 ## - v0.4
-##   Add OpenBSD support.
+#    Add OpenBSD support.
 ## - v0.3
-##   Add FreeBSD support.
+#    Add FreeBSD support.
+## - v0.2
+#    Modify to work with line update.
+## - v0.1
+#    Works in linux os.
 ##
 
 ### version
