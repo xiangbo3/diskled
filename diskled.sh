@@ -19,9 +19,9 @@
 #####################################################################################
 ## Update log:
 ## - v0.4
-##   Add OpenBSD support
+##   Add OpenBSD support.
 ## - v0.3
-##   Add FreeBSD support 
+##   Add FreeBSD support.
 ##
 
 ### version
