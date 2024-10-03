@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 #####################################################################################
 ##
 ## Hard disk activity monitor in console
@@ -18,8 +18,10 @@
 ##
 #####################################################################################
 ## Update log:
+## - v0.7
+##   Remove bash dependencies, now script is run by sh.
 ## - v0.6
-##   Add DragonflyBSD support.
+##   Add DragonFlyBSD support.
 ## - v0.5
 ##   Add NetBSD support.
 ## - v0.4
@@ -29,7 +31,7 @@
 ##
 
 ### version
-ver="v0.6"
+ver="v0.7"
 ver_name="Disk LED ${ver} / by xiangbo"
 ver_line="--------------------------"
 
@@ -81,8 +83,8 @@ done
 show_title() {
   clear
   echo 
-  echo -e " $ver_name"
-  echo -e " $ver_line"
+  echo " $ver_name"
+  echo " $ver_line"
 }
 
 show_title
@@ -97,7 +99,7 @@ while [ 1 ]; do
     fi
 
     ##move cursor
-    echo -ne '\033[4;1H'
+    echo -n '\033[4;1H'
 
     for d in $disks; do
 
@@ -128,9 +130,11 @@ while [ 1 ]; do
 		#w1=$(echo $stats | awk '{print $2}')
 	elif [ "$OS" = "Linux" ]; then
 		dsk="/sys/block/${d}/stat"
-		stats=$(cat $dsk) stat=($stats)
-		r1="${stat[0]}"
-		w1="${stat[4]}"
+		stats=$(cat $dsk)
+		r1=$(echo $stats | awk '{print $1}')
+		w1=$(echo $stats | awk '{print $5}')
+		#r1="${stat[0]}"
+		#w1="${stat[4]}"
 	fi
 
 	eval 'r0=$'${d}_r0
@@ -158,14 +162,14 @@ while [ 1 ]; do
 	eval "${d}_w0=${w1}"
 
 	### output led status
-	echo -ne " $d | $r_color $rout \t $w_color $wout $no_color \n"
+	echo " $d | $r_color $rout \t $w_color $wout $no_color "
 
     done
     
     ## show time
-    echo -e " $ver_line"
+    echo " $ver_line"
     now=$(date "+%Y-%m-%d %H:%M:%S")
-    echo -ne " $now \n\n"
+    echo " $now \n\n"
 
     sleep 0.5
 
