@@ -167,6 +167,6 @@ while [ 1 ]; do
     now=$(date "+%Y-%m-%d %H:%M:%S")
     echo -ne " $now \n\n"
 
-    sleep 1
+    sleep 0.5
 
 done
