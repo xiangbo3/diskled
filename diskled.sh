@@ -61,8 +61,9 @@ OS=$(uname)
 
 ### Echo -e function
 ## test if echo needs -e parameter
+## freebsd netbsd dragonflybsd need -e
 ECHO_E="no"
-if [ "Y\nes" = $(echo "Y\nes") ]; then
+if [ "Yes\n" = $(echo "Yes\n") ]; then
   ECHO_E="yes"
 fi
 
