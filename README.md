@@ -21,3 +21,4 @@ It's a shell script, just run it.
 ```
 
 *by xiangbo / 2024-02-29*
+
