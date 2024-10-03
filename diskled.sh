@@ -59,6 +59,20 @@ show_title() {
 ### OS Version
 OS=$(uname)
 
+### Echo -e function
+## test if echo needs -e parameter
+ECHO_E="no"
+if [ "Y\nes" = $(echo "Y\nes") ]; then
+  ECHO_E="yes"
+fi
+echo_e() {
+  if [ "$ECHO_E" = "yes" ]; then
+	echo -e "$@"
+  else
+	echo "$@"
+  fi
+}
+
 ## set variables
 if [ "$OS" = "FreeBSD" ]; then
 	disks=$(sysctl -n kern.disks)
@@ -103,7 +117,7 @@ while [ 1 ]; do
     fi
 
     ## move cursor
-    echo "\033[3;1H"
+    echo_e '\033[3;1H'
 
     for d in $disks; do
 
@@ -166,7 +180,7 @@ while [ 1 ]; do
 	eval "${d}_w0=${w1}"
 
 	### output led status
-	echo " $d | $r_color $rout \t $w_color $wout $no_color "
+	echo_e " $d | $r_color $rout \t $w_color $wout $no_color "
 
     done
     
