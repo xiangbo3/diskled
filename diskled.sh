@@ -35,7 +35,7 @@
 ##
 
 ### version
-ver="v0.8"
+ver="v0.9"
 ver_name="Disk LED ${ver} / by xiangbo"
 ver_line="--------------------------"
 
@@ -65,6 +65,7 @@ ECHO_E="no"
 if [ "Y\nes" = $(echo "Y\nes") ]; then
   ECHO_E="yes"
 fi
+
 echo_e() {
   if [ "$ECHO_E" = "yes" ]; then
 	echo -e "$@"
@@ -73,7 +74,18 @@ echo_e() {
   fi
 }
 
-## set variables
+### Name function
+NAME_MAX=0
+
+name_fit() {
+  name="$1"
+  while [ ${#name} -lt $NAME_MAX ]; do
+    name="${name} "
+  done
+  echo "${name}"
+}
+
+## Set variables
 if [ "$OS" = "FreeBSD" ]; then
 	disks=$(sysctl -n kern.disks)
 elif [ "$OS" = "OpenBSD" ]; then
@@ -101,10 +113,14 @@ else
 fi
 
 for d in $disks; do
+	if [ ${#d} -gt $NAME_MAX ]; then
+	    NAME_MAX=${#d}
+	fi
 	eval "${d}_r0=0"
 	eval "${d}_w0=0"
 done
 
+## print title
 show_title
 
 ## loop
@@ -180,7 +196,7 @@ while [ 1 ]; do
 	eval "${d}_w0=${w1}"
 
 	### output led status
-	echo_e " $d | $r_color $rout \t $w_color $wout $no_color "
+	echo_e " $(name_fit $d) | $r_color $rout \t $w_color $wout $no_color "
 
     done
     
