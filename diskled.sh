@@ -18,6 +18,8 @@
 ##
 #####################################################################################
 ## Update log:
+## - v0.5
+##   Add NetBSD support.
 ## - v0.4
 ##   Add OpenBSD support.
 ## - v0.3
@@ -25,9 +27,9 @@
 ##
 
 ### version
-ver="v0.4"
-ver_name="Hard Disk LED ${ver} / by xiangbo"
-ver_line="-------------------------------"
+ver="v0.5"
+ver_name="Disk LED ${ver} / by xiangbo"
+ver_line="--------------------------"
 
 ## READ color / green
 r_color='\033[0;32m'
@@ -55,6 +57,8 @@ elif [ "$OS" = "OpenBSD" ]; then
 		fi
 	done
 	IFS="${old_ifs}"
+elif [ "$OS" = "NetBSD" ]; then
+	disks=$(sysctl -n hw.disknames) 
 elif [ "$OS" = "Linux" ]; then
 	disks=$(lsblk -d | tail -n+2 | grep -v '^ ' | awk '{print $1}')
 else
@@ -71,8 +75,8 @@ done
 show_title() {
   clear
   echo 
-  echo -e "\t $ver_name"
-  echo -e "\t $ver_line"
+  echo -e " $ver_name"
+  echo -e " $ver_line"
 }
 
 show_title
@@ -103,6 +107,10 @@ while [ 1 ]; do
 		r1=$(echo $stats | awk '{print $2}')
 		w1=0
 		#w1=$(echo $stats | awk '{print $2}')
+	elif [ "$OS" = "NetBSD" ]; then
+		stats=$(iostat -dxI $dsk|grep $d)
+		r1=$(echo $stats | awk '{print $3}')
+		w1=$(echo $stats | awk '{print $7}')
 	elif [ "$OS" = "Linux" ]; then
 		dsk="/sys/block/${d}/stat"
 		stats=$(cat $dsk) stat=($stats)
@@ -131,14 +139,14 @@ while [ 1 ]; do
 	eval "${d}_w0=${w1}"
 
 	### output led status
-	echo -ne "\t $d | $r_color $rout \t $w_color $wout $no_color \n"
+	echo -ne " $d | $r_color $rout \t $w_color $wout $no_color \n"
 
     done
     
     ## show time
-    echo -e "\t $ver_line"
+    echo -e " $ver_line"
     now=$(date "+%Y-%m-%d %H:%M:%S")
-    echo -ne "\t $now \n\n"
+    echo -ne " $now \n\n"
 
     sleep 1
 
