@@ -35,7 +35,7 @@
 ##
 
 ### version
-ver="v0.9"
+ver="v1.0"
 ver_name="Disk LED ${ver} / by xiangbo"
 ver_line="--------------------------"
 
@@ -124,12 +124,22 @@ done
 ## print title
 show_title
 
+### Cleanup function
+cleanup () {
+	tput cnorm
+}
+
+trap cleanup EXIT
+
 ## loop
 while [ 1 ]; do
 
-    ## clear every 10 seconds
+    ## hiden cursor
+    tput civis
+
+    ## clear every 15 seconds
     now=$(date "+%s")
-    if [ $(($now % 10)) -eq 0 ]; then
+    if [ $(($now % 15)) -eq 0 ]; then
 	    show_title
     fi
 
