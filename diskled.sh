@@ -128,8 +128,7 @@ cleanup () {
 }
 
 ## signal handle
-trap cleanup EXIT INT ABRT KILL TERM
-trap cleanup SIGINT
+trap cleanup EXIT INT ABRT KILL TERM SIGINT
 
 ## hiden cursor
 clear
