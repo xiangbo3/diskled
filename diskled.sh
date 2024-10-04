@@ -121,21 +121,25 @@ for d in $disks; do
 	eval "${d}_w0=0"
 done
 
+### Cleanup function
+cleanup () {
+    tput cnorm
+    exit
+}
+
+## signal handle
+trap cleanup EXIT INT ABRT KILL TERM
+trap cleanup SIGINT
+
+## hiden cursor
+clear
+tput civis
+
 ## print title
 show_title
 
-### Cleanup function
-cleanup () {
-	tput cnorm
-}
-
-trap cleanup EXIT
-
 ## loop
 while [ 1 ]; do
-
-    ## hiden cursor
-    tput civis
 
     ## clear every 15 seconds
     now=$(date "+%s")
