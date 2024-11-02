@@ -1,9 +1,20 @@
-#!/usr/bin/env sh
+#!/bin/sh
+
+#####################################################################################
 #####################################################################################
 ##
 ## Hard disk activity monitor in console
 ##
-##         Copyright (c) 2024, xiangbo@foxmail.com
+##         Copyright (c) 2024 Xiang Bo <xiangbo@foxmail.com>
+##         All rights reserved.
+##
+## Redistribution and use in source and binary forms, with or without
+## modification, are permitted provided that the following conditions are met:
+## 1. Redistributions of source code must retain the above copyright notice, this
+##    list of conditions and the following disclaimer.
+## 2. Redistributions in binary form must reproduce the above copyright notice,
+##    this list of conditions and the following disclaimer in the documentation
+##    and/or other materials provided with the distribution.
 ##
 ## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 ## AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -17,6 +28,8 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ##
 #####################################################################################
+#####################################################################################
+
 ## Update log:
 ## - v0.7
 #    Remove bash dependencies, now script is run by sh.
@@ -48,7 +61,7 @@ rw_color='\033[0;33m'
 ## clear colors
 no_color='\033[0m'
 
-### Show title
+### title
 show_title() {
   clear
   echo 
@@ -77,7 +90,6 @@ echo_e() {
 
 ### Name function
 NAME_MAX=0
-
 name_fit() {
   name="$1"
   while [ ${#name} -lt $NAME_MAX ]; do
@@ -113,6 +125,7 @@ else
 	exit
 fi
 
+### set NAME_MAX
 for d in $disks; do
 	if [ ${#d} -gt $NAME_MAX ]; then
 	    NAME_MAX=${#d}
